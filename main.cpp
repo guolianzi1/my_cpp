@@ -6,6 +6,8 @@
 #include <sources/utils/registry_util.hpp>
 #include "gtest/gtest.h"
 
+
+
 TEST(RegistryTest, test1){
     LPCSTR key_path = R"(SOFTWARE\Microsoft\Windows\CurrentVersion\rpa_client\rpa_test)";
     LPCWSTR value_name = L"a1定定位嘎嘎嘎位";
@@ -25,6 +27,16 @@ TEST(NetWorkTest, test1){
         std::cout << "download error" << std::endl;
     }
 }
+
+
+TEST(NetWorkTest, test2){
+    http::Request request("http://127.0.0.1:5000");
+    auto response = request.send("GET");
+    std::string r(response.body.cbegin(), response.body.cend());
+    std::cout << r << std::endl;
+}
+
+
 
 int main(int argc, char **args){
     testing::InitGoogleTest(&argc, args);

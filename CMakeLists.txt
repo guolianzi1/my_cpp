@@ -10,8 +10,11 @@ include_directories(sources/tools)
 include_directories(sources/utils)
 
 add_executable(my_cpp
-        sources/tools/HTTPRequest.hpp
-        sources/utils/string_util.hpp main.cpp sources/utils/registry_util.hpp sources/utils/registry_util.hpp)
+        main.cpp
+        sources/utils/string_util.hpp
+        sources/utils/registry_util.hpp
+        sources/utils/registry_util.hpp
+        sources/tools/HTTPRequest.hpp)
 
 set(GOOGLETEST_VERSION 1.12.1)
 add_subdirectory(external/googletest)

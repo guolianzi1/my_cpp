@@ -22,6 +22,7 @@
 #include <vector>
 
 #if defined(_WIN32) || defined(__CYGWIN__)
+#  pragma comment(lib,"ws2_32.lib")
 #  pragma push_macro("WIN32_LEAN_AND_MEAN")
 #  pragma push_macro("NOMINMAX")
 #  ifndef WIN32_LEAN_AND_MEAN
@@ -1206,6 +1207,10 @@ namespace http
 
 #endif // HTTPREQUEST_HPP
 
+#ifndef CUSTOM_URLDOWNLOADTOFILEW_HPP
+
+#define CUSTOM_URLDOWNLOADTOFILEW_HPP
+
 #if defined(_WIN32) || defined(__CYGWIN__)
 #include <urlmon.h>
 #pragma comment(lib,"urlmon.lib")
@@ -1215,4 +1220,6 @@ namespace http{
         return hr == S_OK;
     }
 }
+#endif
+
 #endif
