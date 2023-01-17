@@ -1205,3 +1205,14 @@ namespace http
 }
 
 #endif // HTTPREQUEST_HPP
+
+#if defined(_WIN32) || defined(__CYGWIN__)
+#include <urlmon.h>
+#pragma comment(lib,"urlmon.lib")
+namespace http{
+    bool URLDownloadToFileW(LPCWSTR url, LPCWSTR filepath){
+        HRESULT hr = ::URLDownloadToFileW(nullptr, url, filepath, 0, nullptr);
+        return hr == S_OK;
+    }
+}
+#endif
