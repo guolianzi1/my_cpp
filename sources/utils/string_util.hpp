@@ -81,17 +81,17 @@ namespace string_util_1{
         return result;
     }
 
-    std::wstring string_to_wstring(const std::string &string1) {
+    std::wstring string_to_wstring(unsigned long ToPage, const std::string &string1) {
         std::wstring result;
         //获取缓冲区大小，并申请空间，缓冲区大小按字符计算
         int len = MultiByteToWideChar(
-                CP_ACP,
+                ToPage,
                 0,
                 string1.c_str(), static_cast<int>(string1.size()), nullptr, 0);
         auto *buffer = new wchar_t[len + 1];
         //多字节编码转换成宽字节编码
         MultiByteToWideChar(
-                CP_ACP,
+                ToPage,
                 0,
                 string1.c_str(), (int)string1.size(), buffer, len);
 
@@ -100,6 +100,14 @@ namespace string_util_1{
         result.append(buffer);
         delete[] buffer;
         return result;
+    }
+
+    // 好像C++ 20 就自带了这个函数 ends_with
+    bool endswith(std::string const &str, std::string const &suffix) {
+        if (str.length() < suffix.length()) {
+            return false;
+        }
+        return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
     }
 }
 
