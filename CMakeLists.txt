@@ -20,3 +20,7 @@ set(GOOGLETEST_VERSION 1.12.1)
 add_subdirectory(external/googletest)
 include_directories(external/googletest/include)
 target_link_libraries(my_cpp gtest_main)
+
+
+add_subdirectory(external/spdlog1x)
+include_directories(external/spdlog1x/include)
