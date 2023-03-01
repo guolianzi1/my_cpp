@@ -10,6 +10,7 @@
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
+#include "cargs.h"
 
 
 TEST(RegistryTest, test1) {
@@ -58,7 +59,7 @@ TEST(JsonTest, test2) {
 
 
 TEST(LoggingTest, file){
-    std::string filepath(R"(E:\qct\untitled1\cmake-build-debug\rotating.txt)");
+    std::string filepath(R"(F:\test\rotating.txt)");
     auto max_size = 1048576 * 5;
     auto max_files = 3;
     // 保留三个文件，每个文件5mb
@@ -92,6 +93,85 @@ TEST(LoggingTest, console_and_file){
     auto logger2 = std::make_shared<spdlog::logger>("multi_sink", sinks);
 
     SPDLOG_LOGGER_INFO(logger2, "控制台有吗7777");
+}
+
+static struct cag_option options[] = {
+        {.identifier = 's',
+                .access_letters = "s",
+                .access_name = nullptr,
+                .value_name = nullptr,
+                .description = "Simple flag"},
+
+        {.identifier = 'm',
+                .access_letters = "mMoO",
+                .access_name = nullptr,
+                .value_name = nullptr,
+                .description = "Multiple access letters"},
+
+        {.identifier = 'l',
+                .access_letters = nullptr,
+                .access_name = "long",
+                .value_name = nullptr,
+                .description = "Long parameter name"},
+
+        {.identifier = 'k',
+                .access_letters = "k",
+                .access_name = "key",
+                .value_name = "VALUE",
+                .description = "Parameter value"},
+
+        {.identifier = 'h',
+                .access_letters = "h",
+                .access_name = "help",
+                .description = "Shows the command help"}};
+
+struct demo_configuration
+{
+    bool simple_flag;
+    bool multiple_flag;
+    bool long_flag;
+    const char *key;
+};
+
+TEST(commandLineTest, test1){
+    char identifier;
+    const char *value;
+    cag_option_context context;
+    struct demo_configuration config = {false, false, false, NULL};
+
+    /**
+     * Now we just prepare the context and iterate over all options. Simple!
+     */
+
+    auto *a2 = new char;
+    cag_option_prepare(&context, options, CAG_ARRAY_SIZE(options), 1, &a2);
+    while (cag_option_fetch(&context)) {
+        identifier = cag_option_get(&context);
+        switch (identifier) {
+            case 's':
+                config.simple_flag = true;
+                break;
+            case 'm':
+                config.multiple_flag = true;
+                break;
+            case 'l':
+                config.long_flag = true;
+                break;
+            case 'k':
+                value = cag_option_get_value(&context);
+                config.key = value;
+                break;
+            case 'h':
+                printf("Usage: cargsdemo [OPTION]...\n");
+                printf("Demonstrates the cargs library.\n\n");
+                cag_option_print(options, CAG_ARRAY_SIZE(options), stdout);
+                printf("\nNote that all formatting is done by cargs.\n");
+                break;
+        }
+    }
+
+    std::cout << config.key << std::endl;
+    delete a2;
 }
 
 int main(int argc, char **args) {

@@ -24,3 +24,6 @@ target_link_libraries(my_cpp gtest_main)
 
 add_subdirectory(external/spdlog1x)
 include_directories(external/spdlog1x/include)
+
+add_subdirectory(external/cargs)
+include_directories(external/cargs/include)
